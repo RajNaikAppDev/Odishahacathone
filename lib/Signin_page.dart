@@ -1,6 +1,5 @@
 import 'package:busapp/login_scren.dart';
 import 'package:flutter/material.dart';
-import 'dart:ui';
 
 class CreateAccountScreen extends StatefulWidget {
   const CreateAccountScreen({super.key});
@@ -18,15 +17,8 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Background gradient with dark neon vibe
       body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Color(0xFF0F2027), Color(0xFF203A43), Color(0xFF2C5364)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        ),
+        color: const Color(0xFF1E3A8A), // simple deep blue background
         child: Center(
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(20.0),
@@ -34,123 +26,90 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 30),
-                // Title
                 Center(
                   child: Text(
                     "Create an Account",
                     style: TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
-                      color: Colors.cyanAccent.shade200,
-                      shadows: [
-                        Shadow(
-                          blurRadius: 10,
-                          color: Colors.cyanAccent.shade200,
-                          offset: const Offset(0, 0),
-                        ),
-                      ],
+                      color: Colors.blue[200],
                     ),
                   ),
                 ),
                 const SizedBox(height: 40),
-
-                // Glassmorphism container for form
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(25.0),
-                  child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
-                    child: Container(
-                      padding: const EdgeInsets.all(25),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.05),
-                        borderRadius: BorderRadius.circular(25),
-                        border: Border.all(
-                          color: Colors.cyanAccent.shade200.withOpacity(0.4),
-                          width: 1.5,
-                        ),
+                Container(
+                  padding: const EdgeInsets.all(25),
+                  decoration: BoxDecoration(
+                    color: Colors.blue[800]?.withOpacity(0.7),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Column(
+                    children: [
+                      _buildTextField(
+                        controller: emailController,
+                        hint: "Username or Email",
+                        icon: Icons.person,
                       ),
-                      child: Column(
-                        children: [
-                          // Email
-                          _buildGlassTextField(
-                            controller: emailController,
-                            hint: "Username or Email",
-                            icon: Icons.person,
-                          ),
-                          const SizedBox(height: 20),
-                          // Password
-                          _buildGlassTextField(
-                            controller: passwordController,
-                            hint: "Password",
-                            icon: Icons.lock,
-                            obscureText: true,
-                          ),
-                          const SizedBox(height: 20),
-                          // Confirm Password
-                          _buildGlassTextField(
-                            controller: confirmPasswordController,
-                            hint: "Confirm Password",
-                            icon: Icons.lock_outline,
-                            obscureText: true,
-                          ),
-                          const SizedBox(height: 30),
-                          // Create Account Button
-                          SizedBox(
-                            width: double.infinity,
-                            height: 50,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.cyanAccent.shade400
-                                    .withOpacity(0.6),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-                                shadowColor: Colors.cyanAccent,
-                                elevation: 10,
-                              ),
-                              onPressed: () {
-                                // Handle signup logic
-                              },
-                              child: const Text(
-                                "Create Account",
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.black,
-                                ),
-                              ),
+                      const SizedBox(height: 20),
+                      _buildTextField(
+                        controller: passwordController,
+                        hint: "Password",
+                        icon: Icons.lock,
+                        obscureText: true,
+                      ),
+                      const SizedBox(height: 20),
+                      _buildTextField(
+                        controller: confirmPasswordController,
+                        hint: "Confirm Password",
+                        icon: Icons.lock_outline,
+                        obscureText: true,
+                      ),
+                      const SizedBox(height: 30),
+                      SizedBox(
+                        width: double.infinity,
+                        height: 50,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blue[400],
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
                             ),
                           ),
-                          const SizedBox(height: 20),
-                          const Text(
-                            "-Or continue with-",
-                            style: TextStyle(color: Colors.white70),
+                          onPressed: () {
+                            // Handle signup logic
+                          },
+                          child: const Text(
+                            "Create Account",
+                            style: TextStyle(fontSize: 16, color: Colors.white),
                           ),
-                          const SizedBox(height: 20),
-                          // Social buttons
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              _buildSocialButton(
-                                "https://img.icons8.com/color/48/google-logo.png",
-                              ),
-                              const SizedBox(width: 20),
-                              _buildSocialButton(
-                                "https://img.icons8.com/ios-filled/50/facebook-new.png",
-                              ),
-                              const SizedBox(width: 20),
-                              _buildSocialButton(
-                                "https://img.icons8.com/ios-filled/50/mac-os.png",
-                              ),
-                            ],
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      const Text(
+                        "-Or continue with-",
+                        style: TextStyle(color: Colors.white70),
+                      ),
+                      const SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          _buildSocialButton(
+                            "https://img.icons8.com/color/48/google-logo.png",
+                          ),
+                          const SizedBox(width: 20),
+                          _buildSocialButton(
+                            "https://img.icons8.com/ios-filled/50/facebook-new.png",
+                          ),
+                          const SizedBox(width: 20),
+                          _buildSocialButton(
+                            "https://img.icons8.com/ios-filled/50/mac-os.png",
                           ),
                         ],
                       ),
-                    ),
+                    ],
                   ),
                 ),
-
                 const SizedBox(height: 30),
-                // Already have an account
                 Center(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -171,15 +130,8 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                         child: Text(
                           "Login",
                           style: TextStyle(
-                            color: Colors.cyanAccent.shade200,
+                            color: Colors.blue[200],
                             fontWeight: FontWeight.bold,
-                            shadows: [
-                              Shadow(
-                                blurRadius: 8,
-                                color: Colors.cyanAccent.shade200,
-                                offset: const Offset(0, 0),
-                              ),
-                            ],
                           ),
                         ),
                       ),
@@ -195,60 +147,41 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
     );
   }
 
-  // Glass TextField builder
-  Widget _buildGlassTextField({
+  Widget _buildTextField({
     required TextEditingController controller,
     required String hint,
     required IconData icon,
     bool obscureText = false,
   }) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(15),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.05),
-            borderRadius: BorderRadius.circular(15),
-            border: Border.all(
-              color: Colors.cyanAccent.shade200.withOpacity(0.3),
-              width: 1.5,
-            ),
-          ),
-          child: TextField(
-            controller: controller,
-            obscureText: obscureText,
-            style: const TextStyle(color: Colors.white),
-            decoration: InputDecoration(
-              prefixIcon: Icon(icon, color: Colors.cyanAccent.shade200),
-              hintText: hint,
-              hintStyle: const TextStyle(color: Colors.white70),
-              border: InputBorder.none,
-              contentPadding: const EdgeInsets.symmetric(
-                vertical: 18,
-                horizontal: 15,
-              ),
-            ),
-          ),
+    return TextField(
+      controller: controller,
+      obscureText: obscureText,
+      style: const TextStyle(color: Colors.white),
+      decoration: InputDecoration(
+        prefixIcon: Icon(icon, color: Colors.blue[200]),
+        hintText: hint,
+        hintStyle: const TextStyle(color: Colors.white70),
+        filled: true,
+        fillColor: Colors.blue[700]?.withOpacity(0.5),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: BorderSide.none,
+        ),
+        contentPadding: const EdgeInsets.symmetric(
+          vertical: 18,
+          horizontal: 15,
         ),
       ),
     );
   }
 
-  // Social button builder
   Widget _buildSocialButton(String imageUrl) {
-    return Container(
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: Colors.white.withOpacity(0.05),
-        border: Border.all(
-          color: Colors.cyanAccent.shade200.withOpacity(0.4),
-          width: 1.2,
-        ),
-      ),
+    return CircleAvatar(
+      backgroundColor: Colors.blue[700]?.withOpacity(0.5),
+      radius: 25,
       child: IconButton(
         icon: Image.network(imageUrl),
-        iconSize: 40,
+        iconSize: 30,
         onPressed: () {},
       ),
     );
