@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 
 class BusSearchScreen extends StatelessWidget {
   final String fromLocation;
@@ -22,12 +24,12 @@ class BusSearchScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
-        title: Text("Bus Search"),
+        title: const Text("Bus Search"),
         centerTitle: true,
       ),
       body: Padding(
@@ -37,14 +39,14 @@ class BusSearchScreen extends StatelessWidget {
           children: [
             Text(
               "Routes Found (${buses.length})..",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Text(
               "From : $fromLocation  📍\nTo : $toLocation  📍",
-              style: TextStyle(fontSize: 16),
+              style: const TextStyle(fontSize: 16),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
 
             // Bus list
             Expanded(
@@ -57,7 +59,7 @@ class BusSearchScreen extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15),
                     ),
-                    margin: EdgeInsets.only(bottom: 16),
+                    margin: const EdgeInsets.only(bottom: 16),
                     child: Padding(
                       padding: const EdgeInsets.all(16),
                       child: Column(
@@ -65,15 +67,15 @@ class BusSearchScreen extends StatelessWidget {
                         children: [
                           Text(
                             "Bus ${index + 1} No : ${bus["busNo"]}",
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(height: 6),
+                          const SizedBox(height: 6),
                           Text("Duration : ${bus["duration"]}"),
                           Text("Next Trip : ${bus["nextTrip"]}"),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
 
                           // Track Live Button
                           Center(
@@ -83,19 +85,27 @@ class BusSearchScreen extends StatelessWidget {
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20),
                                 ),
-                                padding: EdgeInsets.symmetric(
+                                padding: const EdgeInsets.symmetric(
                                   horizontal: 20,
                                   vertical: 10,
                                 ),
                               ),
                               onPressed: () {
-                                // TODO: Add navigation to Live Tracking Page
+                                // ✅ Navigate to map page
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => LiveMapScreen(
+                                      busNo: bus["busNo"]!,
+                                    ),
+                                  ),
+                                );
                               },
-                              icon: Icon(
+                              icon: const Icon(
                                 Icons.fiber_manual_record,
                                 color: Colors.red,
                               ),
-                              label: Text("TRACK LIVE"),
+                              label: const Text("TRACK LIVE"),
                             ),
                           ),
                         ],
@@ -121,6 +131,49 @@ class BusSearchScreen extends StatelessWidget {
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
           BottomNavigationBarItem(icon: Icon(Icons.search), label: "Search"),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
+        ],
+      ),
+    );
+  }
+}
+
+/// ✅ New screen with OpenStreetMap
+class LiveMapScreen extends StatelessWidget {
+  final String busNo;
+
+  const LiveMapScreen({super.key, required this.busNo});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Live Tracking - $busNo"),
+      ),
+      body: FlutterMap(
+        options: MapOptions(
+          center: LatLng(28.6139, 77.2090), // Sample center (Delhi)
+          zoom: 13.0,
+        ),
+        children: [
+          TileLayer(
+            urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+            subdomains: const ['a', 'b', 'c'],
+            userAgentPackageName: 'com.example.busapp',
+          ),
+          MarkerLayer(
+            markers: [
+              Marker(
+                point: LatLng(28.6139, 77.2090),
+                width: 80,
+                height: 80,
+                builder: (ctx) => const Icon(
+                  Icons.directions_bus,
+                  color: Colors.green,
+                  size: 40,
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );
