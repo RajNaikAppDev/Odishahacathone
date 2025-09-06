@@ -1,14 +1,14 @@
 import 'package:busapp/BusSearchScreen.dart';
 import 'package:flutter/material.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class TrackScreen extends StatefulWidget {
+  const TrackScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<TrackScreen> createState() => _TrackScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _TrackScreenState extends State<TrackScreen> {
   TextEditingController fromController = TextEditingController();
   TextEditingController toController = TextEditingController();
   bool showLiveUpdate = false;

@@ -1,4 +1,4 @@
-import 'package:busapp/track_screen.dart';
+import 'package:busapp/login_scren.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui';
 
@@ -164,7 +164,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => LoginScreen(),
+                              builder: (context) => LoginPage(),
                             ),
                           );
                         },
