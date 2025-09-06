@@ -1,3 +1,4 @@
+import 'package:busapp/Signin_page.dart';
 import 'package:busapp/track_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -10,6 +11,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: Scaffold(body: LoginScreen()));
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(body: CreateAccountScreen()),
+    );
   }
 }

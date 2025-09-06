@@ -95,9 +95,9 @@ class BusSearchScreen extends StatelessWidget {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => LiveMapScreen(
-                                      busNo: bus["busNo"]!,
-                                    ),
+                                    builder:
+                                        (context) =>
+                                            LiveMapScreen(busNo: bus["busNo"]!),
                                   ),
                                 );
                               },
@@ -146,9 +146,7 @@ class LiveMapScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Live Tracking - $busNo"),
-      ),
+      appBar: AppBar(title: Text("Live Tracking - $busNo")),
       body: FlutterMap(
         options: MapOptions(
           center: LatLng(28.6139, 77.2090), // Sample center (Delhi)
@@ -166,7 +164,7 @@ class LiveMapScreen extends StatelessWidget {
                 point: LatLng(28.6139, 77.2090),
                 width: 80,
                 height: 80,
-                builder: (ctx) => const Icon(
+                child: const Icon(
                   Icons.directions_bus,
                   color: Colors.green,
                   size: 40,
