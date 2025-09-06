@@ -1,3 +1,4 @@
+import 'package:busapp/conductorPage.dart';
 import 'package:busapp/track_screen.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -190,13 +191,23 @@ class _LoginPageState extends State<LoginPage> {
                               return;
                             }
 
-                            // 👉 Navigate to TrackMyPage
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const TrackScreen(),
-                              ),
-                            );
+                            // 👉 Conditional navigation
+                            if (_selectedUserType == "Passenger") {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const TrackScreen(),
+                                ),
+                              );
+                            } else if (_selectedUserType == "Driver" ||
+                                _selectedUserType == "Conductor") {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const Conductorpage(),
+                                ),
+                              );
+                            }
                           },
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(
