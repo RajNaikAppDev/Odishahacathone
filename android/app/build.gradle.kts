@@ -42,3 +42,7 @@ android {
 flutter {
     source = "../.."
 }
+
+dependencies {
+    implementation("org.osmdroid:osmdroid-android:6.1.16")
+}
