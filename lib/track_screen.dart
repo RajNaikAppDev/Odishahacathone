@@ -15,14 +15,18 @@ class _LoginScreenState extends State<LoginScreen> {
 
   String fromLocation = "";
   String toLocation = "";
+  int _selectedIndex = 2; // default selected (Home)
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFF001F29), // Dark Teal background
       appBar: AppBar(
-        title: Text("Track My Bus"),
-        leading: Icon(Icons.menu),
+        title: const Text("Track My Bus"),
+        leading: const Icon(Icons.menu),
         centerTitle: true,
+        backgroundColor: const Color(0xFF001F29),
+        elevation: 0,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
@@ -30,43 +34,84 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              const Text(
                 "Hello Shivam !",
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
               // Location Input
-              Text("Enter your Location"),
+              const Text(
+                "Enter your Location",
+                style: TextStyle(color: Colors.white70),
+              ),
               TextField(
                 controller: fromController,
+                style: const TextStyle(color: Colors.white),
                 decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.location_on),
+                  filled: true,
+                  fillColor: Colors.white10,
+                  prefixIcon: const Icon(
+                    Icons.location_on,
+                    color: Colors.white,
+                  ),
                   hintText: "Enter starting point",
+                  hintStyle: const TextStyle(color: Colors.white54),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
               // Destination Input
-              Text("Enter your Destination"),
+              const Text(
+                "Enter your Destination",
+                style: TextStyle(color: Colors.white70),
+              ),
               TextField(
                 controller: toController,
+                style: const TextStyle(color: Colors.white),
                 decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.location_on),
+                  filled: true,
+                  fillColor: Colors.white10,
+                  prefixIcon: const Icon(
+                    Icons.location_on,
+                    color: Colors.white,
+                  ),
                   hintText: "Enter destination",
+                  hintStyle: const TextStyle(color: Colors.white54),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
               // Find Routes Button
               Center(
                 child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 40,
+                      vertical: 12,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    backgroundColor: Colors.transparent,
+                    shadowColor: Colors.transparent,
+                  ).copyWith(
+                    backgroundColor: MaterialStateProperty.resolveWith((
+                      states,
+                    ) {
+                      return null; // handled below with gradient
+                    }),
+                  ),
                   onPressed: () {
                     String fromLocation = fromController.text;
                     String toLocation = toController.text;
@@ -84,7 +129,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       );
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
+                        const SnackBar(
                           content: Text(
                             "Please enter both From and To locations",
                           ),
@@ -92,42 +137,94 @@ class _LoginScreenState extends State<LoginScreen> {
                       );
                     }
                   },
-
-                  child: Text("Find Routes"),
+                  child: Ink(
+                    decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                        colors: [Color(0xFF00C9FF), Color(0xFF92FE9D)],
+                      ),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Container(
+                      alignment: Alignment.center,
+                      child: const Text(
+                        "Find Routes",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
               ),
-
-              SizedBox(height: 20),
-
-              // Show entered locations
-              if (fromLocation.isNotEmpty && toLocation.isNotEmpty)
-                Text(
-                  "Route: $fromLocation ➝ $toLocation",
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-
-              SizedBox(height: 20),
-
-              // Live Update Section
+              const SizedBox(height: 20),
             ],
           ),
         ),
       ),
 
-      // Bottom Navigation Bar
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.map), label: "Map"),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.directions_bus),
-            label: "Bus",
-          ),
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: "Search"),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
-        ],
+      // 🌊 Futuristic Bottom Navigation Bar with floating active indicator
+      bottomNavigationBar: Container(
+        decoration: const BoxDecoration(
+          color: Color(0xFF001F29),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black54,
+              blurRadius: 8,
+              offset: Offset(0, -2),
+            ),
+          ],
+        ),
+        child: BottomNavigationBar(
+          currentIndex: _selectedIndex,
+          onTap: (index) => setState(() => _selectedIndex = index),
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: const Color(0xFF001F29),
+          unselectedItemColor: Colors.white54,
+          selectedItemColor: Colors.white,
+          showUnselectedLabels: true,
+          items: [
+            _buildNavItem(Icons.map, "Map", 0),
+            _buildNavItem(Icons.directions_bus, "Bus", 1),
+            _buildNavItem(Icons.home, "Home", 2),
+            _buildNavItem(Icons.search, "Search", 3),
+            _buildNavItem(Icons.person, "Profile", 4),
+          ],
+        ),
       ),
+    );
+  }
+
+  BottomNavigationBarItem _buildNavItem(
+    IconData icon,
+    String label,
+    int index,
+  ) {
+    bool isActive = _selectedIndex == index;
+
+    return BottomNavigationBarItem(
+      icon: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        padding: const EdgeInsets.all(6),
+        decoration:
+            isActive
+                ? BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFF00C9FF), Color(0xFF92FE9D)],
+                  ),
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.tealAccent.withOpacity(0.5),
+                      blurRadius: 10,
+                      spreadRadius: 2,
+                    ),
+                  ],
+                )
+                : null,
+        child: Icon(icon, color: isActive ? Colors.white : Colors.white54),
+      ),
+      label: label,
     );
   }
 }
