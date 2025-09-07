@@ -10,7 +10,10 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen>
     with TickerProviderStateMixin {
-  static const Color kDeepBlue = Color.fromARGB(255, 135, 8, 198);
+  static const Color kBackground = Color(0xFF0B0C10);
+  static const Color kNeonPrimary = Color(0xFF00C6FF);
+  static const Color kNeonSecondary = Color(0xFF0072FF);
+  static const Color kNeonAccent = Color(0xFF00E0FF);
 
   late final AnimationController _busController;
   late final Animation<Offset> _busAnimation;
@@ -80,11 +83,11 @@ class _SplashScreenState extends State<SplashScreen>
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-      backgroundColor: kDeepBlue,
+      backgroundColor: kBackground,
       body: SafeArea(
         child: Stack(
           children: [
-            // Subtle road line at bottom
+            // Subtle neon road line at bottom
             Positioned(
               bottom: 0,
               left: 0,
@@ -93,7 +96,7 @@ class _SplashScreenState extends State<SplashScreen>
                 height: 40,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    colors: [Colors.blue[800]!, Colors.blue[900]!],
+                    colors: [kNeonPrimary, kNeonSecondary],
                   ),
                 ),
               ),
@@ -132,20 +135,31 @@ class _SplashScreenState extends State<SplashScreen>
                                 SlideTransition(
                                   position: _busAnimation,
                                   child: Image.asset(
-                                    'assets/images/buslogo-Photoroom.png', // use same logo or small bus icon
+                                    'assets/images/buslogo-Photoroom.png',
                                     height: 50,
                                   ),
                                 ),
-                                // Location marker
+                                // Location marker with glow
                                 Positioned(
                                   right: size.width * 0.25,
                                   top: 0,
                                   child: ScaleTransition(
                                     scale: _markerScaleAnimation,
-                                    child: Icon(
-                                      Icons.location_on,
-                                      color: Colors.blue[200],
-                                      size: 40,
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: kNeonAccent.withOpacity(0.6),
+                                            blurRadius: 20,
+                                            spreadRadius: 1,
+                                          ),
+                                        ],
+                                      ),
+                                      child: Icon(
+                                        Icons.location_on,
+                                        color: kNeonAccent,
+                                        size: 40,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -154,7 +168,7 @@ class _SplashScreenState extends State<SplashScreen>
                           ),
                           const SizedBox(height: 40),
 
-                          // Bouncing dots
+                          // Bouncing neon dots
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: List.generate(3, (index) {
@@ -166,12 +180,19 @@ class _SplashScreenState extends State<SplashScreen>
                                 width: 12,
                                 height: 12,
                                 decoration: BoxDecoration(
-                                  color: Colors.blue[200]!.withOpacity(
+                                  shape: BoxShape.circle,
+                                  color: kNeonAccent.withOpacity(
                                     (DateTime.now().second + index) % 3 == 0
                                         ? 1
                                         : 0.3,
                                   ),
-                                  shape: BoxShape.circle,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: kNeonAccent.withOpacity(0.6),
+                                      blurRadius: 12,
+                                      spreadRadius: 1,
+                                    ),
+                                  ],
                                 ),
                               );
                             }),

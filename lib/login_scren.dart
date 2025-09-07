@@ -3,6 +3,7 @@ import 'package:busapp/track_screen.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:busapp/Signin_page.dart';
+import 'package:flutter/services.dart'; // 👈 add this at the top
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -13,268 +14,304 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool _rememberMe = false;
-  String? _selectedUserType; // store selected role
+  String? _selectedUserType;
 
   final List<String> _userTypes = ['Passenger', 'Driver', 'Conductor'];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.transparent, // let gradient show
       appBar: AppBar(
-        backgroundColor: Colors.black,
-        title: const Text("Login Screen", style: TextStyle(color: Colors.grey)),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.blue,
-        selectedItemColor: Colors.black,
-        unselectedItemColor: Colors.black,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.place), label: 'Map '),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.directions_bus_filled),
-            label: 'Bus ',
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.exit_to_app, color: Colors.cyanAccent),
+          onPressed: () {
+            SystemNavigator.pop();
+          },
+        ),
+        title: const Text(
+          "Login Screen",
+          style: TextStyle(
+            color: Colors.cyanAccent,
+            fontWeight: FontWeight.bold,
           ),
-          BottomNavigationBarItem(icon: Icon(Icons.home_filled), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
-        ],
+        ),
       ),
-      body: SingleChildScrollView(
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(45),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Back Button
-                ElevatedButton(
-                  onPressed: () {},
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.blue),
-                    side: MaterialStateProperty.all(
-                      const BorderSide(color: Colors.black, width: 1),
-                    ),
-                    shape: MaterialStateProperty.all(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                  ),
-                  child: const Text(
-                    "Back",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
+      extendBodyBehindAppBar: true,
+      body: Container(
+        width: double.infinity, // ✅ full width
+        height: double.infinity, // ✅ full height
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Color(0xFF0f2027), // dark navy
+              Color(0xFF203a43), // deep blue
+              Color(0xFF2c5364), // teal-blue blend
+            ],
+          ),
+        ),
+        child: SingleChildScrollView(
+          child: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(40),
+              child: Center(
+                child: Column(
+                  children: [
+                    const SizedBox(height: 20),
 
-                const SizedBox(height: 30),
-                // Welcome Text
-                Center(
-                  child: Column(
-                    children: [
-                      const Text(
-                        "Welcome Back",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-
-                      const SizedBox(height: 20),
-                      // Dropdown for user type
-                      SizedBox(
-                        width: 300,
-                        child: DropdownButtonFormField<String>(
-                          decoration: const InputDecoration(
-                            labelText: "Select User Type",
-                            border: OutlineInputBorder(),
+                    // Welcome text
+                    const Text(
+                      "Welcome Back",
+                      style: TextStyle(
+                        color: Colors.cyanAccent,
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                        shadows: [
+                          Shadow(
+                            blurRadius: 20,
+                            color: Colors.blueAccent,
+                            offset: Offset(0, 0),
                           ),
-                          value: _selectedUserType,
-                          items:
-                              _userTypes
-                                  .map(
-                                    (type) => DropdownMenuItem(
-                                      value: type,
-                                      child: Text(type),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 40),
+
+                    // Dropdown for user type
+                    SizedBox(
+                      width: 300,
+                      child: DropdownButtonFormField<String>(
+                        dropdownColor: Colors.black,
+                        decoration: InputDecoration(
+                          labelText: "Select User Type",
+                          labelStyle: const TextStyle(color: Colors.cyanAccent),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: Colors.cyanAccent,
+                            ),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: Colors.blueAccent,
+                              width: 2,
+                            ),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        style: const TextStyle(color: Colors.white),
+                        value: _selectedUserType,
+                        items:
+                            _userTypes
+                                .map(
+                                  (type) => DropdownMenuItem(
+                                    value: type,
+                                    child: Text(
+                                      type,
+                                      style: const TextStyle(
+                                        color: Colors.cyanAccent,
+                                      ),
                                     ),
-                                  )
-                                  .toList(),
-                          onChanged: (value) {
+                                  ),
+                                )
+                                .toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            _selectedUserType = value;
+                          });
+                        },
+                      ),
+                    ),
+
+                    const SizedBox(height: 30),
+
+                    // Email + Password
+                    SizedBox(
+                      width: 300,
+                      child: Column(
+                        children: [
+                          TextFormField(
+                            style: const TextStyle(color: Colors.white),
+                            decoration: InputDecoration(
+                              label: const Text(
+                                "Email",
+                                style: TextStyle(color: Colors.cyanAccent),
+                              ),
+                              enabledBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.cyanAccent,
+                                ),
+                              ),
+                              focusedBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.blueAccent,
+                                  width: 2,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 25),
+                          TextFormField(
+                            obscureText: true,
+                            style: const TextStyle(color: Colors.white),
+                            decoration: InputDecoration(
+                              label: const Text(
+                                "Password",
+                                style: TextStyle(color: Colors.cyanAccent),
+                              ),
+                              enabledBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.cyanAccent,
+                                ),
+                              ),
+                              focusedBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.blueAccent,
+                                  width: 2,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    // Remember me
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Checkbox(
+                          value: _rememberMe,
+                          activeColor: Colors.cyanAccent,
+                          checkColor: Colors.black,
+                          onChanged: (bool? value) {
                             setState(() {
-                              _selectedUserType = value;
+                              _rememberMe = value ?? false;
                             });
                           },
+                          shape: const CircleBorder(),
                         ),
-                      ),
-
-                      const SizedBox(height: 30),
-                      // Text fields
-                      Container(
-                        padding: const EdgeInsets.all(30),
-                        child: Column(
-                          children: [
-                            // Email
-                            SizedBox(
-                              width: 300,
-                              child: TextFormField(
-                                decoration: const InputDecoration(
-                                  label: Text(
-                                    "Email",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 30),
-                            // Password
-                            SizedBox(
-                              width: 300,
-                              child: TextFormField(
-                                obscureText: true,
-                                decoration: const InputDecoration(
-                                  label: Text(
-                                    "Password",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      // remember me checkbox
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Checkbox(
-                            value: _rememberMe,
-                            onChanged: (bool? value) {
-                              setState(() {
-                                _rememberMe = value ?? false;
-                              });
-                            },
-                            shape: const CircleBorder(),
+                        const Text(
+                          "Remember me",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.cyanAccent,
                           ),
-                          const Text(
-                            "Remember me",
-                            style: TextStyle(
-                              fontSize: 18,
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    // Sign In Button
+                    SizedBox(
+                      height: 55,
+                      width: 320,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          if (_selectedUserType == null) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                  "Please select a user type first",
+                                ),
+                              ),
+                            );
+                            return;
+                          }
+
+                          if (_selectedUserType == "Passenger") {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const TrackScreen(),
+                              ),
+                            );
+                          } else {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const Conductorpage(),
+                              ),
+                            );
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.black,
+                          side: const BorderSide(
+                            color: Colors.cyanAccent,
+                            width: 2,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          shadowColor: Colors.blueAccent,
+                          elevation: 10,
+                        ),
+                        child: const Text(
+                          "Sign In",
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.cyanAccent,
+                            fontWeight: FontWeight.bold,
+                            shadows: [
+                              Shadow(
+                                blurRadius: 15,
+                                color: Colors.blueAccent,
+                                offset: Offset(0, 0),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 30),
+
+                    // Create account
+                    RichText(
+                      text: TextSpan(
+                        text: "Don't have an account? ",
+                        style: const TextStyle(
+                          color: Colors.white70,
+                          fontSize: 16,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: "Create Account",
+                            style: const TextStyle(
+                              color: Colors.cyanAccent,
+                              fontSize: 16,
                               fontWeight: FontWeight.bold,
+                              decoration: TextDecoration.underline,
                             ),
+                            recognizer:
+                                TapGestureRecognizer()
+                                  ..onTap = () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder:
+                                            (context) =>
+                                                const CreateAccountScreen(),
+                                      ),
+                                    );
+                                  },
                           ),
                         ],
                       ),
-                      const SizedBox(height: 10),
-                      // SIGN IN BUTTON
-                      SizedBox(
-                        height: 50,
-                        width: 350,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            if (_selectedUserType == null) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text(
-                                    "Please select a user type first",
-                                  ),
-                                ),
-                              );
-                              return;
-                            }
-
-                            // 👉 Conditional navigation
-                            if (_selectedUserType == "Passenger") {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const TrackScreen(),
-                                ),
-                              );
-                            } else if (_selectedUserType == "Driver" ||
-                                _selectedUserType == "Conductor") {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const Conductorpage(),
-                                ),
-                              );
-                            }
-                          },
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(
-                              Colors.blue,
-                            ),
-                            side: MaterialStateProperty.all(
-                              const BorderSide(color: Colors.black, width: 1),
-                            ),
-                            shape: MaterialStateProperty.all(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
-                          ),
-                          child: const Text(
-                            "Sign In",
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 30),
-                      Column(
-                        children: [
-                          RichText(
-                            text: TextSpan(
-                              text: "Don't have account?",
-                              style: const TextStyle(
-                                color: Colors.black,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              children: [
-                                TextSpan(
-                                  text: "Create Acoount",
-                                  style: const TextStyle(
-                                    color: Colors.blue,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    decoration: TextDecoration.underline,
-                                  ),
-                                  recognizer:
-                                      TapGestureRecognizer()
-                                        ..onTap = () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder:
-                                                  (context) =>
-                                                      const CreateAccountScreen(),
-                                            ),
-                                          );
-                                        },
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(height: 20),
-                        ],
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
         ),
