@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "623678509056",
+    "firebase_url": "https://busbuddy-5787f-default-rtdb.firebaseio.com",
+    "project_id": "busbuddy-5787f",
+    "storage_bucket": "busbuddy-5787f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:623678509056:android:0e1cbc8c33ad0d3aff48e5",
+        "android_client_info": {
+          "package_name": "com.example.busapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDpWSXoOgGbY4m3QNRONQjtyUXSNLVbhtA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
