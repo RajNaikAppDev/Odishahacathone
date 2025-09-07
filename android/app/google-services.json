@@ -13,7 +13,12 @@
           "package_name": "com.example.busapp"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "623678509056-itnh3s5upt9of9jsv2r910njib9rbaln.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDpWSXoOgGbY4m3QNRONQjtyUXSNLVbhtA"
@@ -21,7 +26,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "623678509056-itnh3s5upt9of9jsv2r910njib9rbaln.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

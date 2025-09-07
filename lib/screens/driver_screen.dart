@@ -4,7 +4,14 @@ import '../services/driver_service.dart';
 class DriverScreen extends StatefulWidget {
   final String busId; // unique bus ID
 
-  const DriverScreen({super.key, required this.busId});
+  const DriverScreen({
+    super.key,
+    required this.busId,
+    required String name,
+    required String email,
+    required String busNumber,
+    required String busRoutes,
+  });
 
   @override
   State<DriverScreen> createState() => _DriverScreenState();
@@ -35,7 +42,9 @@ class _DriverScreenState extends State<DriverScreen> {
       body: Center(
         child: ElevatedButton(
           onPressed: _toggleTracking,
-          child: Text(_isTracking ? "Stop Sharing Location" : "Start Sharing Location"),
+          child: Text(
+            _isTracking ? "Stop Sharing Location" : "Start Sharing Location",
+          ),
         ),
       ),
     );
