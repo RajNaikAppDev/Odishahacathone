@@ -15,7 +15,7 @@ class _TrackScreenState extends State<TrackScreen> {
 
   String fromLocation = "";
   String toLocation = "";
-  int _selectedIndex = 2;
+  int _selectedIndex = 2; // default selected (Home)
 
   @override
   Widget build(BuildContext context) {
